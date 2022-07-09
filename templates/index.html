@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>    
+    <title>¿A quién se parece tu foto?</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+</head>
+
+<body>    
+    <h1>Carga una foto y encuentra los k personajes más parecidos</h1><br><br><br>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" id="query_image"><br><br>
+        <div id="preview_upload_image"></div>
+        <script src="../static/js/script.js"></script>
+        <br><br>
+        <label for="TopK">Ingrese el valor de k: </label><br><br>
+        <input type="number" name="TopK" class="image_form">
+        <input type="submit" value="Cargar" class="image_form">
+    </form>
+
+
+
+</body>
