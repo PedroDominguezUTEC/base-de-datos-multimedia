@@ -1,6 +1,6 @@
 from rtree import index
 
-def rtree_index(faces_encoding, k , dataset):
+def knn_rtree(faces_encoding, k , dataset):
     name = 'knn/highD_index'
 
     p = index.Property()

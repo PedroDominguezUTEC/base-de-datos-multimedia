@@ -1,6 +1,6 @@
 import face_recognition
 
-def sequential(faces_encoding, k, dataset):
+def knn_sequential(faces_encoding, k, dataset):
 
     answer = []
     for path, matrix_vector_faces in dataset:
@@ -12,7 +12,7 @@ def sequential(faces_encoding, k, dataset):
     return [path for path, distance in query_answer[:k]]
 
 
-def query_with_radius(faces_encoding, r, dataset):
+def radius_sequential(faces_encoding, r, dataset):
     answer = []
     
     for path, matrix_vector_faces in dataset:
