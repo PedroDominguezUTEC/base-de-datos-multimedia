@@ -1,11 +1,16 @@
 from distutils.log import debug
 from flask import Flask, request, redirect, render_template, url_for
-from knn.sequential import sequential, query_with_radius
-from knn.rtree_index import rtree_index
+from knn.sequential import knn_sequential, radius_sequential
+from knn.rtree_index import knn_rtree
 from initialization import load_json, calculate_radius
 import face_recognition
+import os
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = '.'
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 def name_path_dict(paths):
     name_paths = dict()
@@ -15,7 +20,7 @@ def name_path_dict(paths):
         sep = path.split("/")
         name = sep[1]
         temp["name"] = name
-        temp["path"] = path
+        temp["path"] = os.path.join(app.config['UPLOAD_FOLDER'], path)
         name_paths[i] = temp
         i += 1
     return name_paths
@@ -50,7 +55,7 @@ def index():
 def sec_prioridad(file, k, dataset):
     img = face_recognition.load_image_file(file)
     encoded_faces = face_recognition.face_encodings(img)
-    paths = sequential(encoded_faces, k, dataset)
+    paths = knn_sequential(encoded_faces, k, dataset)
     name_paths = name_path_dict(paths)
     return render_template("results.html", path = file, paths=name_paths)
 
