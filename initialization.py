@@ -59,4 +59,4 @@ def calculate_radius(experiments, dataset):
         for dis in dist:
             vector_dist.append(dis)
 
-    print(numpy.mean(vector_dist))
+    return (numpy.mean(vector_dist), numpy.std(vector_dist))
