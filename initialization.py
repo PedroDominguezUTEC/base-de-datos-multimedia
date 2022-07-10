@@ -2,6 +2,7 @@ import face_recognition
 import os
 import json
 import numpy
+import random
 from json import JSONEncoder
 
 class NumpyArrayEncoder(JSONEncoder):
@@ -35,6 +36,7 @@ def initialize():
                     
         json.dump(dictionary, json_file, cls=NumpyArrayEncoder)
 
+
 def load_json():
     #Open and load the json file
     file = open("encoded_faces.json", "r")
@@ -46,3 +48,15 @@ def load_json():
         dataset.append((path, numpy.asarray(decodedJson[path])))
     
     return dataset
+
+
+def calculate_radius(experiments, dataset):
+    vector_dist = []
+    for i in range(experiments):
+        obj_1 = random.choice(dataset)[1]
+        obj_2 = random.choice(dataset)[1]
+        dist = face_recognition.face_distance(obj_1, obj_2[0])
+        for dis in dist:
+            vector_dist.append(dis)
+
+    print(numpy.mean(vector_dist))

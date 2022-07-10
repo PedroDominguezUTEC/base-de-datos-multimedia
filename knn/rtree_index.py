@@ -22,4 +22,4 @@ def rtree_index(faces_encoding, k , dataset):
      
     lres = list(idx.nearest(coordinates=query, num_results=k))
 
-    print("Rtree result:", [dataset[i][0] for i in lres[:k]])
+    return [dataset[i][0] for i in lres[:k]]

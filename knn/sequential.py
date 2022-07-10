@@ -9,4 +9,4 @@ def sequential(faces_encoding, k, dataset):
 
     query_answer = sorted(answer, key = lambda x: x[1])
 
-    print("Sequential result:", [path for path, distance in query_answer[:k]])
+    return [path for path, distance in query_answer[:k]]
