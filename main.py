@@ -2,6 +2,7 @@ import face_recognition
 
 from knn.sequential import knn_sequential, radius_sequential
 from knn.rtree_index import knn_rtree
+from knn.kdtree_index import knn_kdtree
 from initialization import load_json, calculate_radius
 
 #Initialize query
@@ -13,11 +14,12 @@ query_image = face_recognition.load_image_file(image_path)
 faces_encoding = face_recognition.face_encodings(query_image)
 
 dataset = load_json()
-r, sd = calculate_radius(5000, dataset)
+#r, sd = calculate_radius(5000, dataset)
 
-knn_sequential(faces_encoding, k, dataset)
-radius_sequential(faces_encoding, r - 2*sd, dataset)
-knn_rtree(faces_encoding, k, dataset)
+#knn_sequential(faces_encoding, k, dataset)
+#radius_sequential(faces_encoding, r - 2*sd, dataset)
+print(knn_rtree(faces_encoding, k, dataset))
+print(knn_kdtree(faces_encoding, k, dataset))
 
 
 
