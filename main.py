@@ -1,28 +1,20 @@
-import json
-import numpy
 import face_recognition
 
-#Open and load the json file
-file = open("encoded_faces.json", "r")
-decodedJson = json.load(file)
+from knn.sequential import sequential
+from knn.rtree_index import rtree_index
+from initialization import load_json
+
+#Initialize query
+k = 5
+image_path = "yo_con_8_cursos.jpg"
 
 #Open query image and extract characteristic vector
-image_path = "yo_con_8_cursos.jpg"
 query_image = face_recognition.load_image_file(image_path) 
 faces_encoding = face_recognition.face_encodings(query_image)
 
-#Dataset of each image and its vectors
-dataset = []
-for path, matrix_vector_faces in decodedJson.items():
-    dataset.append((path, numpy.asarray(decodedJson[path])))
-
-answer = []
-for path, matrix_vector_faces in dataset:
-    for dis in face_recognition.face_distance(matrix_vector_faces, faces_encoding[0]):
-        answer.append((path, dis))
-
-query_answer = sorted(answer, key = lambda x: x[1])
-print(query_answer[:5])
+dataset = load_json()
+sequential(faces_encoding, k, dataset)
+rtree_index(faces_encoding, k, dataset)
 
 
 '''

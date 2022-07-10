@@ -1,28 +1,25 @@
-from pandas import NamedAgg
 from rtree import index
-import os
 
-name = 'highD_index'
-data_file = name + '.data'
-index_file = name + '.index'
+def rtree_index(faces_encoding, k , dataset):
+    name = 'knn/highD_index'
 
-if not (os.path.exists(data_file) or os.path.exists(index_file)):
     p = index.Property()
-    p.dimension = 4 #D
+    p.dimension = 128 #D
     p.buffering_capacity = 4 #M
     p.dat_extension = 'data'
     p.idx_extension = 'index'
     idx = index.Index(name, properties=p)
+    
+    if idx.get_size() < 1:
+        c = 0
+        for path, matrix_vector_faces in dataset:
+            for vector in matrix_vector_faces:
+                q = tuple(vector)
+                idx.insert(c, q)
+            c+=1
 
-#insertar puntos
-idx.insert(1, (44, 45, 35, 41))
-idx.insert(0, (15, 13, 19, 18))
-idx.insert(2, (3, 4, 3, 2))
+    query = tuple(faces_encoding[0])
+     
+    lres = list(idx.nearest(coordinates=query, num_results=k))
 
-#retornar elementos de la interseccion con el rectangulo 
-q = (2, 3, 4, 7)
-lres = list(idx.nearest(coordinates=q, num_results=2))
-print("El vecino mas cercano de (2, 3, 4, 7): ", lres)
-
-
-
+    print("Rtree result:", [dataset[i][0] for i in lres[:k]])
