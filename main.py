@@ -16,8 +16,8 @@ dataset = load_json()
 r, sd = calculate_radius(5000, dataset)
 
 sequential(faces_encoding, k, dataset)
-query_with_radius(faces_encoding, r - 2*sd, dataset)
-rtree_index(faces_encoding, k, dataset)
+#query_with_radius(faces_encoding, r - 2*sd, dataset)
+#rtree_index(faces_encoding, k, dataset)
 
 
 

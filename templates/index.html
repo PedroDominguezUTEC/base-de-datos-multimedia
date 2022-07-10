@@ -7,15 +7,21 @@
 <body>    
     <h1>Carga una foto y encuentra los k personajes más parecidos</h1><br><br><br>
     <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" id="query_image"><br><br>
+        <input type="file" name="file" id="query_image" accept="image/png, image/jpg, image/jpeg"><br><br>
         <div id="preview_upload_image"></div>
         <script src="../static/js/script.js"></script>
         <br><br>
         <label for="TopK">Ingrese el valor de k: </label><br><br>
         <input type="number" name="TopK" class="image_form">
+        <label for="metodo">Elija el método que utilizará: </label>
+        <select id="metodo" name="metodo">
+            <option value="KNN-Secuencial-prioridad">KNN-Secuencial con cola de prioridad</option>
+            <option value="KNN-Secuencial-rango">KNN-Secuencial búsqueda por rango</option>
+            <option value="KNN-RTree">KNN-RTree</option>
+            <option value="KNN-HighD">KNN-HighD</option>
+        </select><br><br>
+        <label for="radio">Si seleccionó rango, indique el radio: </label>
+        <input type="number" name="radio" class="image_form">
         <input type="submit" value="Cargar" class="image_form">
     </form>
-
-
-
 </body>
