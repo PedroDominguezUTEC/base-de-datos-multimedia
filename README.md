@@ -84,16 +84,22 @@ def calculate_radius(experiments, dataset):
 
 El número de experimentos realizados en este proyecto ha sido de 5000 y el resultado obtenido ha sido el siguiente:
 
-<center><img src="static/Distribucion.PNG"></center>
-<center>Histograma del experimento de distribución de radios</center>
+<center>
+
+![Histograma del experimento de distribución de radios](static/Distribucion.PNG)
+
+</center>
+
 
 Por lo tanto, un radio adecuado sería de 0.8 con margen de 0.1 para realizar consultas a **esta** colección
 
 ## R tree
 
+El R tree es una estructura de datos en forma de árbol que agrupa objetos y los representa con un *mínimo bounding box* o MBB para cada nivel superior del árbol. Para este proyecto, a nivel de hoja cada MBB describe un conjunto de puntos en el espacion con 128 dimensiones en donde cada dimensión representa un atributo de la imagen de la coleccción.
+
 ```python
 def knn_rtree(faces_encoding, k , dataset):
-    name = 'knn/highD_index'
+    name = 'knn/rtree_index'
 
     p = index.Property()
     p.dimension = 128 #D
@@ -116,6 +122,12 @@ def knn_rtree(faces_encoding, k , dataset):
 
     return [dataset[i][0] for i in lres[:k]]
 ```
+
+Para este proyecto se utilizó la librería `rtree` de Python la cual permite crear la estructura con características específicas. Asimismo, para conseguir una mejor eficiencia en sus consultas de búsqueda KNN la construcción de su índice se realizó una sola vez.
+
+Finalmente, la búsqueda KNN se realizó llamando a la función `nearest()` la cual recibe como parámetro una tupla que representa la consulta y un número entero *k* que indica cuántos elementos retornar.
+
+
 
 ## KD tree
 
