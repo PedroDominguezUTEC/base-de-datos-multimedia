@@ -193,29 +193,19 @@ def knn_faiss(faces_encoding, k , dataset):
 ```
 
 ## Frontend
-El frontend de este proyecto se realizó con Javascrip
+El frontend de este proyecto se realizó con HTML5, CSS y JavaScript. Se trata de una interfaz sencilla y amigable, en la que se carga una foto con el fin de encontrar los personajes más parecidos en la base de datos. Utilizando el siguiente código de JavaScript, se muestra un preview de la imagen que el usuario subirá, para verificar que se trata de la imagen correcta:
+```javascript
+const query_image = document.querySelector("#query_image");
+var uploaded_image = "";
 
-**Moverse a la carpeta `/frontend`**
-### Setup
-```terminal
-npm install
+query_image.addEventListener("change", function(){
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+        uploaded_image = reader.result;
+        document.querySelector("#preview_upload_image").style.backgroundImage = `url(${uploaded_image})`;
+    })
+    reader.readAsDataURL(this.files[0]);
+})
 ```
+Luego, utilizando forms de HTML5, se pasan los parámetros que serán utilizados para el cálculo de los K personajes más cercanos a la imagen del usuario. Una vez se submittea el form, se renderiza una página de resultados, en la que figurará la foto que el usuario subió, y los k personajes más cercanos, con nombre y foto. 
 
-### Run
-```terminal
-npm start
-```
-
-## Backend
-El backend de este proyecto se realizó con Flask. 
-
-**Moverse a la carpeta `/backend`**
-### Setup
-```terminal
-pip3 install requeriments.txt
-```
-
-### Run
-```terminal
-python3 backend/main.py
-```
