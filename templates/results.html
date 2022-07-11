@@ -5,14 +5,13 @@
 
 <body> 
     <h1>Su foto: </h1>
-    <figure>
-        <img src="{{path}}">
-    </figure>
+    <img src="{{ path }}">
+    
     <h2>Resultados: </h2>
     {% for key in paths.keys()|sort %}
         {%- set val=paths[key] %}
         <h6>{{val.name}}</h6>
-        <img src="{{val.path}}">
+        <img src="{{ val.path }}">
         <br><br>
     {% endfor %}
 </body>
