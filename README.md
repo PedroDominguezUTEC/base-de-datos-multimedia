@@ -159,12 +159,22 @@ def knn_kdtree(faces_encoding, k , dataset):
     return [dataset[face_index_to_dataset_index[index]][0] for index in indexes[0]]
 ```
 
+Para este proyecto se utilizó la librería `scipy.spatial` de ScyPy la cual permite crear la estructura fácilmente. Asimismo, la construcción de su índice se realiza una sola vez y se guarda en la cache, permitiendo realizar consultas eficientes.
+
+Finalmente, la búsqueda KNN se realizó llamando a la función `query()` la cual recibe como parámetro una vector que representa la consulta y un número entero *k* que indica cuántos elementos retornar.
+
+
 ## Hierarchical Navigable Small World (HNSW)
+
+Un grafo de mundo pequeño o **small-world network** es un tipo de grafo matemático en el que la mayoría de los nodos no son vecinos entre sí, pero los vecinos de cualquier nodo tienen la probabilidad de ser vecinos entre sí y se puede llegar a la mayoría de los nodos con un pequeño número de saltos o pasos.
+
+A este fenómeno se le conoce como *mundo pequeño*, en el que dos entidades desconocidas están vinculadas por una cadena corta de conocidos. Muchos gráficos empíricos muestran este efecto tales como las redes sociales, Wikipedia, redes de genes, la Internet o incluso, siendo el caso de este proyecto, una colección de rostros.
+
 
 ```python
 def knn_faiss(faces_encoding, k , dataset):
 
-    index = faiss.IndexHNSWFlat(128, 32)
+    index = faiss.IndexHNSWFlat(128, 64)
 
     data = []
 
@@ -183,14 +193,26 @@ def knn_faiss(faces_encoding, k , dataset):
 
     data = np.float32(np.array(data))
 
+
+    if not index.is_trained:
+        index.train(data)
+
+    index.hnsw.efConstruction = 40
+    index.hnsw.efSearch = 32
+
     index.add(data)
 
     xq = np.float32(np.array([faces_encoding[0]]))
     
     D, I = index.search(xq, k)
-    
     return [dataset[face_index_to_dataset_index[idx]][0] for idx in I[0]]
 ```
+
+Para este proyecto se utilizó la librería `faiss` de Facebook / Meta la cual permite crear el grafo. Asimismo, antes de construir el índice primero se debe entrenar la red con la colección. Esto se logra utilizando la función `train()` la cual recibe la colección de imágenes a entrenar.
+
+Adicionalmente, estudios empíricos recomiendan tener 64 conexiones por cada vértice, así como 64 y 32 capas de profundidad de exploración para la construcción del índice y consultas de búsqueda respectivamente.
+
+Finalmente, la búsqueda KNN se realizó llamando a la función `search()` la cual recibe como parámetro una vector que representa la consulta y un número entero *k* que indica cuántos elementos retornar.
 
 ## Frontend
 El frontend de este proyecto se realizó con HTML5, CSS y JavaScript. Se trata de una interfaz sencilla y amigable, en la que se carga una foto con el fin de encontrar los personajes más parecidos en la base de datos. Utilizando el siguiente código de JavaScript, se muestra un preview de la imagen que el usuario subirá, para verificar que se trata de la imagen correcta:
