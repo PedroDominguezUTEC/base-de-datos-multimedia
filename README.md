@@ -1,4 +1,4 @@
-# Proyecto N°2 - Base de datos II
+# Proyecto N°3 - Base de Datos Multimedia
 
 ## Integrantes
 
@@ -130,6 +130,10 @@ Finalmente, la búsqueda KNN se realizó llamando a la función `nearest()` la c
 
 
 ## KD tree
+
+El KD tree es un árbol binario en donde cada nodo es un punto k-dimensional. Esto significa que cada nodo se considera como una división del hiperplano en dos partes, en donde los puntos a la izquierda de este hiperplano están representados por el subárbol izquierdo del nodo y los puntos a la derecha del hiperplano por el subárbol derecho.
+
+Cada nodo del árbol está asociado a una de dimensión del punto. Por lo tanto, si se escogiera el eje "x" de un nodo, todos los puntos con un valor "x" menor que el nodo aparecerán en el subárbol izquierdo y todos los puntos con un valor "x" mayor estarán en el subárbol derecho.
 
 ```python
 def knn_kdtree(faces_encoding, k , dataset):

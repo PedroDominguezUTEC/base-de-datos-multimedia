@@ -4,7 +4,7 @@ import numpy as np
 
 def knn_faiss(faces_encoding, k , dataset):
 
-    index = faiss.IndexHNSWFlat(128, 32)
+    index = faiss.IndexHNSWFlat(128, 64)
 
     data = []
 
@@ -22,6 +22,13 @@ def knn_faiss(faces_encoding, k , dataset):
         dataset_index += 1
 
     data = np.float32(np.array(data))
+
+
+    if not index.is_trained:
+        index.train(data)
+
+    index.hnsw.efConstruction = 40
+    index.hnsw.efSearch = 32
 
     index.add(data)
 
