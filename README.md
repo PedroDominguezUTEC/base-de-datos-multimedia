@@ -231,3 +231,15 @@ query_image.addEventListener("change", function(){
 ```
 Luego, utilizando forms de HTML5, se pasan los parámetros que serán utilizados para el cálculo de los K personajes más cercanos a la imagen del usuario. Una vez se submittea el form, se renderiza una página de resultados, en la que figurará la foto que el usuario subió, y los k personajes más cercanos, con nombre y foto. 
 
+## Experimentación
+Para la experimentación, se corrieron 100 tests con cada valor de N y se calculó la media aritmética de los tiempos para cada algoritmo y estructura. Se obtuvo la siguiente tabla, los tiempos están en segundos:
+
+<center>
+
+![Tabla de experimentación](static/ExperimentacionTabla.PNG)
+
+![Gráfico de experimentación](static/ExperimentacionGrafico.PNG)
+
+</center>
+
+Se puede observar que los algoritmos secuenciales son los menos eficientes, y sus tiempos se duplican junto con el valor de N. Por otro lado, existe una gran mejora cuando se utiliza el RTree. Si bien la indexación puede tardar, una vez que los índices han sido creados, la búsqueda será mucho más eficiente. Sin embargo, el KDTree será aún más eficiente que el RTree, y la estructura HNSW de la librería Faiss será incluso mejor, al punto que ni siquiera se puede visualizar en el gráfico. 

@@ -1,77 +1,63 @@
 import face_recognition
-from flask import Flask, jsonify, request, redirect
 
-# You can change this to any folder on your system
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+from knn.sequential import knn_sequential, radius_sequential
+from knn.rtree_index import knn_rtree
+from knn.kdtree_index import knn_kdtree
+from knn.faiss_index import knn_faiss
+from initialization import load_json, calculate_radius
 
-app = Flask(__name__)
+#Initialize query
+k = 5
+image_path = "static/yo_con_8_cursos.jpg"
 
+#Open query image and extract characteristic vector
+query_image = face_recognition.load_image_file(image_path) 
+faces_encoding = face_recognition.face_encodings(query_image)
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+dataset = load_json()
+r, sd = calculate_radius(5000, dataset)
 
+#print(knn_sequential(faces_encoding, k, dataset))
+#radius_sequential(faces_encoding, r - 2*sd, dataset)
+#print(knn_rtree(faces_encoding, k, dataset))
+print(knn_kdtree(faces_encoding, k, dataset))
 
-@app.route('/', methods=['GET', 'POST'])
-def upload_image():
-    # Check if a valid image file was uploaded
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            return redirect(request.url)
-
-        file = request.files['file']
-
-        if file.filename == '':
-            return redirect(request.url)
-
-        if file and allowed_file(file.filename):
-            # The image file seems valid! Detect faces and return the result.
-            return detect_faces_in_image(file)
-
-    # If no valid image file was uploaded, show the file upload form:
-    return '''
-    <!doctype html>
-    <title>Es la foto de Vizcarra?</title>
-    <h1>Cargar una foto y ver si corresponde al presidente Vizcarra!</h1>
-    <form method="POST" enctype="multipart/form-data">
-      <input type="file" name="file">
-      <input type="submit" value="Cargar">
-    </form>
-    '''
+knn_faiss(faces_encoding, k, dataset)
 
 
-def detect_faces_in_image(file_stream):
+'''
+#Dataset of each image and its vectors
+dataset = []
+for path, matrix_vector_faces in decodedJson.items():
+    dataset.append((path, numpy.asarray(decodedJson[path])))
 
-    # Pre-calculated face encoding of Obama generated with face_recognition.face_encodings(img)
-    picture_of_vizcarra = face_recognition.load_image_file("fotos_bd/vizcarra.png")    
-    known_face_encoding = face_recognition.face_encodings(picture_of_vizcarra)[0]
-    
 
-    # Load the uploaded image file
-    img = face_recognition.load_image_file(file_stream)
-    # Get face encodings for any faces in the uploaded image
-    unknown_face_encodings = face_recognition.face_encodings(img)
-    
-    face_found = False
-    is_vizcarra = False
+answer = []
+for path, matrix_vector_faces in dataset:
+    for dis in face_recognition.face_distance(matrix_vector_faces, faces_encoding[0]):
+        answer.append((path, dis))
 
-    if len(unknown_face_encodings) > 0:
-        face_found = True
-        # See if the first face in the uploaded image matches the known face of Obama
-        for i in range(len(unknown_face_encodings)):
-            match_results = face_recognition.compare_faces([known_face_encoding], unknown_face_encodings[i])
-        # Your can use the distance to return a ranking of faces <face, dist>. 
-        # face_recognition.face_distance([known_face_encoding], unknown_face_encodings[0])
+query_answer = sorted(answer, key = lambda x: x[1], reverse=True)
+
+dists = []
+for path, dis in query_answer:
+    dists.append(dis)
+print(numpy.mean(dists))
+
+
+data_row = dict()
+for file in os.listdir("./lfw/"):
+    subdir = os.path.join("./lfw/", file)
+    for pic in os.listdir(subdir):
+        path = os.path.join(subdir, pic)
+        data_row[pic] = face_recognition.load_image_file(path)
         
-        if match_results[0]:
-            is_vizcarra = True
-
-    # Return the result as json
-    result = {
-        "rostros_en_imagen": face_found,
-        "es_foto_de_vizcarra": is_vizcarra
-    }
-    return jsonify(result)
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5001, debug=True)
+N = 5000
+vector_dist = []
+for i in range(N):
+    obj_1 = random.choice(list(data_row.values()))
+    obj_2 = random.choice(list(data_row.values()))
+    dist = face_recognition.face_distance(obj_1, obj_2[0])
+    for dis in dist:
+        vector_dist.append(dis)
+'''
