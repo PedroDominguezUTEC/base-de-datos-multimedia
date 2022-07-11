@@ -1,4 +1,4 @@
-# Proyecto N°2 - Base de datos II
+# Proyecto N°3 - Base de Datos Multimedia
 
 ## Integrantes
 
@@ -84,16 +84,22 @@ def calculate_radius(experiments, dataset):
 
 El número de experimentos realizados en este proyecto ha sido de 5000 y el resultado obtenido ha sido el siguiente:
 
-<center><img src="static/Distribucion.PNG"></center>
-<center>Histograma del experimento de distribución de radios</center>
+<center>
+
+![Histograma del experimento de distribución de radios](static/Distribucion.PNG)
+
+</center>
+
 
 Por lo tanto, un radio adecuado sería de 0.8 con margen de 0.1 para realizar consultas a **esta** colección
 
 ## R tree
 
+El R tree es una estructura de datos en forma de árbol que agrupa objetos y los representa con un *mínimo bounding box* o MBB para cada nivel superior del árbol. Para este proyecto, a nivel de hoja cada MBB describe un conjunto de puntos en el espacion con 128 dimensiones en donde cada dimensión representa un atributo de la imagen de la coleccción.
+
 ```python
 def knn_rtree(faces_encoding, k , dataset):
-    name = 'knn/highD_index'
+    name = 'knn/rtree_index'
 
     p = index.Property()
     p.dimension = 128 #D
@@ -117,7 +123,17 @@ def knn_rtree(faces_encoding, k , dataset):
     return [dataset[i][0] for i in lres[:k]]
 ```
 
+Para este proyecto se utilizó la librería `rtree` de Python la cual permite crear la estructura con características específicas. Asimismo, para conseguir una mejor eficiencia en sus consultas de búsqueda KNN la construcción de su índice se realizó una sola vez.
+
+Finalmente, la búsqueda KNN se realizó llamando a la función `nearest()` la cual recibe como parámetro una tupla que representa la consulta y un número entero *k* que indica cuántos elementos retornar.
+
+
+
 ## KD tree
+
+El KD tree es un árbol binario en donde cada nodo es un punto k-dimensional. Esto significa que cada nodo se considera como una división del hiperplano en dos partes, en donde los puntos a la izquierda de este hiperplano están representados por el subárbol izquierdo del nodo y los puntos a la derecha del hiperplano por el subárbol derecho.
+
+Cada nodo del árbol está asociado a una de dimensión del punto. Por lo tanto, si se escogiera el eje "x" de un nodo, todos los puntos con un valor "x" menor que el nodo aparecerán en el subárbol izquierdo y todos los puntos con un valor "x" mayor estarán en el subárbol derecho.
 
 ```python
 def knn_kdtree(faces_encoding, k , dataset):
@@ -177,29 +193,19 @@ def knn_faiss(faces_encoding, k , dataset):
 ```
 
 ## Frontend
-El frontend de este proyecto se realizó con Javascrip
+El frontend de este proyecto se realizó con HTML5, CSS y JavaScript. Se trata de una interfaz sencilla y amigable, en la que se carga una foto con el fin de encontrar los personajes más parecidos en la base de datos. Utilizando el siguiente código de JavaScript, se muestra un preview de la imagen que el usuario subirá, para verificar que se trata de la imagen correcta:
+```javascript
+const query_image = document.querySelector("#query_image");
+var uploaded_image = "";
 
-**Moverse a la carpeta `/frontend`**
-### Setup
-```terminal
-npm install
+query_image.addEventListener("change", function(){
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+        uploaded_image = reader.result;
+        document.querySelector("#preview_upload_image").style.backgroundImage = `url(${uploaded_image})`;
+    })
+    reader.readAsDataURL(this.files[0]);
+})
 ```
+Luego, utilizando forms de HTML5, se pasan los parámetros que serán utilizados para el cálculo de los K personajes más cercanos a la imagen del usuario. Una vez se submittea el form, se renderiza una página de resultados, en la que figurará la foto que el usuario subió, y los k personajes más cercanos, con nombre y foto. 
 
-### Run
-```terminal
-npm start
-```
-
-## Backend
-El backend de este proyecto se realizó con Flask. 
-
-**Moverse a la carpeta `/backend`**
-### Setup
-```terminal
-pip3 install requeriments.txt
-```
-
-### Run
-```terminal
-python3 backend/main.py
-```
