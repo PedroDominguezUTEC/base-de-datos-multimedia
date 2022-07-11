@@ -10,7 +10,7 @@
 | Sequential, Query_Radius, R_tree, Kd_tree, Faiss HNSW                | Pedro Domínguez  | 100%          |
 | Frontend, Experimentación                                            | Eduardo Arróspide| 100%          |
 
-## [Video (Hacer clic aquí)]()
+## [Video (Hacer clic aquí)](https://drive.google.com/file/d/1auDZEa4l6q1IxjJS8Rg6M-2hse5bA9cp/view?usp=sharing)
 
 ## Introducción
 
