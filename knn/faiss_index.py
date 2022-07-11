@@ -25,7 +25,7 @@ def knn_faiss(faces_encoding, k , dataset):
 
     index.add(data)
 
-    xq = np.float32(np.array([xq]))
+    xq = np.float32(np.array([faces_encoding[0]]))
     
     D, I = index.search(xq, k)
     
