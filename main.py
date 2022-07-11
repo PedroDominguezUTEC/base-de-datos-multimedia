@@ -7,22 +7,22 @@ from knn.faiss_index import knn_faiss
 from initialization import load_json, calculate_radius
 
 #Initialize query
-k = 10
-image_path = "yo_con_8_cursos.jpg"
+k = 8
+image_path = "static/yo_con_8_cursos.jpg"
 
 #Open query image and extract characteristic vector
 query_image = face_recognition.load_image_file(image_path) 
 faces_encoding = face_recognition.face_encodings(query_image)
 
 dataset = load_json()
-#r, sd = calculate_radius(5000, dataset)
+r, sd = calculate_radius(5000, dataset)
 
-print(knn_sequential(faces_encoding, k, dataset))
-#radius_sequential(faces_encoding, r - 2*sd, dataset)
-#print(knn_rtree(faces_encoding, k, dataset))
-print(knn_kdtree(faces_encoding, k, dataset))
 
-print(knn_faiss(faces_encoding, k, dataset))
+knn_sequential(faces_encoding, k, dataset)
+radius_sequential(faces_encoding, r - 2*sd, dataset)
+knn_rtree(faces_encoding, k, dataset)
+knn_kdtree(faces_encoding, k, dataset)
+knn_faiss(faces_encoding, k, dataset)
 
 
 '''
