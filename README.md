@@ -205,16 +205,3 @@ query_image.addEventListener("change", function(){
 ```
 Luego, utilizando forms de HTML5, se pasan los parámetros que serán utilizados para el cálculo de los K personajes más cercanos a la imagen del usuario. Una vez se submittea el form, se renderiza una página de resultados, en la que figurará la foto que el usuario subió, y los k personajes más cercanos, con nombre y foto. 
 
-## Backend
-El backend de este proyecto se realizó con Flask. 
-
-**Moverse a la carpeta `/backend`**
-### Setup
-```terminal
-pip3 install requeriments.txt
-```
-
-### Run
-```terminal
-python3 backend/main.py
-```
