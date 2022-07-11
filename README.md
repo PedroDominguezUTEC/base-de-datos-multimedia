@@ -1,4 +1,4 @@
-# Proyecto N°2 - Base de datos II
+# Proyecto N°3 - Base de datos II
 
 ## Integrantes
 
@@ -189,7 +189,7 @@ def knn_faiss(faces_encoding, k , dataset):
 ```
 
 ## Frontend
-El frontend de este proyecto se realizó con HTML5, CSS y JavaScript. Se trata de una interfaz sencilla y amigable, en la que se carga una foto con el fin de encontrar los personajes más parecidos en la base de datos. Utilizando el siguiente código de JavaScript, se muestra un preview de la imagen que el usuario subirá, para que pueda verificar que en efecto esa era la imagen que quería subir:
+El frontend de este proyecto se realizó con HTML5, CSS y JavaScript. Se trata de una interfaz sencilla y amigable, en la que se carga una foto con el fin de encontrar los personajes más parecidos en la base de datos. Utilizando el siguiente código de JavaScript, se muestra un preview de la imagen que el usuario subirá, para verificar que se trata de la imagen correcta:
 ```javascript
 const query_image = document.querySelector("#query_image");
 var uploaded_image = "";
